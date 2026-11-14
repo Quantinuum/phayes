@@ -25,7 +25,7 @@ def test_versus_trapeziod_rule():
     liks = jnp.exp(
         vmap(loglikelihood, in_axes=(0, None, None, None))(linsp, m, k, beta)
     )
-    norm_constant = jnp.trapz(liks, linsp)
+    norm_constant = jnp.trapezoid(liks, linsp)
     posterior_evals = liks / norm_constant
 
     assert jnp.allclose(
@@ -48,7 +48,7 @@ def test_versus_trapeziod_rule():
             linsp, jnp.tile(m, 2), jnp.tile(k, 2), jnp.tile(beta, 2)
         )
     )
-    norm_constant2 = jnp.trapz(liks2, linsp)
+    norm_constant2 = jnp.trapezoid(liks2, linsp)
     posterior_evals2 = liks2 / norm_constant2
 
     assert jnp.allclose(

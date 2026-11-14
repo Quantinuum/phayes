@@ -82,8 +82,8 @@ By default [JAX uses 32-bit precision](https://jax.readthedocs.io/en/latest/note
 for phase estimation experiments you may well want to enable 64-bit precision by 
 adding the following to the top of your script
 ```python
-from jax.config import config
-config.update(“jax_enable_x64”, True)
+from jax import config
+config.update("jax_enable_x64", True)
 ```
 
 
