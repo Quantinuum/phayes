@@ -99,7 +99,7 @@ def von_mises_to_fourier(mu: float, kappa: float, J: int) -> jnp.ndarray:
 
     cs = in0k * jnp.cos(js * mu) / jnp.pi
     ss = in0k * jnp.sin(js * mu) / jnp.pi
-    return jnp.row_stack((cs, ss))
+    return jnp.stack((cs, ss))
 
 
 def von_mises_update(
