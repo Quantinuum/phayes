@@ -376,11 +376,11 @@ def fourier_evidence(
     gamma = beta - m * jnp.pi
     cos_gamma = jnp.cos(gamma) * (1 - error_rate)
     sin_gamma = jnp.sin(gamma) * (1 - error_rate)
-    return (
-        0.5
-        + 0.5 * jnp.pi * cos_gamma * fourier_coefficients[0, k - 1]
-        - 0.5 * jnp.pi * sin_gamma * fourier_coefficients[1, k - 1]
-    )
+    # Harmonics beyond the stored Fourier bandwidth have zero coefficients.
+    in_range = k <= fourier_coefficients.shape[1]
+    ck = jnp.where(in_range, fourier_coefficients[0, k - 1], 0)
+    sk = jnp.where(in_range, fourier_coefficients[1, k - 1], 0)
+    return 0.5 + 0.5 * jnp.pi * cos_gamma * ck - 0.5 * jnp.pi * sin_gamma * sk
 
 
 def _c1s1_coeffs(
