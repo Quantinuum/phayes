@@ -9,8 +9,11 @@ kappa_max = 500
 
 
 def bessel_ratio(kappa: Union[float, jnp.ndarray]) -> Union[float, jnp.ndarray]:
+    asymptotic_kappa = jnp.where(kappa < kappa_max, kappa_max, kappa)
     return jnp.where(
-        kappa < kappa_max, special.i1e(kappa) / special.i0e(kappa), 1 - 0.5 / kappa
+        kappa < kappa_max,
+        special.i1e(kappa) / special.i0e(kappa),
+        1 - 0.5 / asymptotic_kappa,
     )
 
 
@@ -35,8 +38,9 @@ def _inverse_bessel_ratio_large(
 
 def inverse_bessel_ratio(r: Union[float, jnp.ndarray]) -> Union[float, jnp.ndarray]:
     # https://dl.acm.org/doi/pdf/10.1145/355945.355949
+    large_r = jnp.where(r < 0.8, 0.8, r)
     ibr = jnp.where(
-        r < 0.8, _inverse_bessel_ratio_small(r), _inverse_bessel_ratio_large(r)
+        r < 0.8, _inverse_bessel_ratio_small(r), _inverse_bessel_ratio_large(large_r)
     )
     return jnp.where(r < bessel_ratio(kappa_max), ibr, 0.5 / (1 - r))
 
