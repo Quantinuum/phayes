@@ -13,7 +13,7 @@ setup(
     license="Apache 2",
     packages=find_packages(),
     python_requires=">=3.8",
-    install_requires=["jax", "jaxlib", "tensorflow-probability"],
+    install_requires=["jax<0.7", "jaxlib<0.7", "tensorflow-probability"],
     classifiers=[
         "Programming Language :: Python",
         "Intended Audience :: Developers",
